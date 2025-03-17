@@ -1,22 +1,8 @@
 <?php
-
-$servername = "localhost";
-$dbname = "4ami";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+include "koneksi.php";
 
 $query = "SELECT * FROM mahasiswa";
-$hasil = mysqli_query($conn, $query);
-
-
-$data = [];
-while ($baris = mysqli_fetch_assoc($hasil)) {
-    $data[] = $baris;
-    
-}
+$data = ambildata($query);
 
 ?>
 
