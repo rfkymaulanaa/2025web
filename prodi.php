@@ -1,3 +1,26 @@
+<?php
+
+$servername = "localhost";
+$dbname = "4ami";
+$username = "root";
+$password = "";
+
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+$query = "SELECT * FROM prodi";
+$hasil = mysqli_query($conn, $query);
+
+
+$data = [];
+while ($baris = mysqli_fetch_assoc($hasil)) {
+    $data[] = $baris;
+    
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +29,34 @@
     <title>SIMPADU POLIBAN</title>
 </head>
 <body>
-    <h1>Data Prodi</h1>
+    <h1>DATA PRODI</h1>
+    <br>
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <th>No</th>
+            <th>Nama Prodi</th>
+            <th>Nama Kaprodi</th>
+            <th>Jurusan</th>
+        </thead>
+
+        <tbody>
+            <?php foreach ($data as $key => $value) :?>
+                <tr>
+                    <td>
+                        <?= $key + 1?>
+                    </td>
+                    <td>
+                        <?= $value["nama"]?>
+                    </td>
+                    <td>
+                        <?= $value["kaprodi"]?>
+                    </td>
+                    <td>
+                        <?= $value["jurusan"]?>
+                    </td>
+                </tr>
+            <?php endforeach?>
+        </tbody>
+    </table>
 </body>
 </html>

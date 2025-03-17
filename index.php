@@ -1,3 +1,26 @@
+<?php
+
+$servername = "localhost";
+$dbname = "4ami";
+$username = "root";
+$password = "";
+
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+$query = "SELECT * FROM mahasiswa";
+$hasil = mysqli_query($conn, $query);
+
+
+$data = [];
+while ($baris = mysqli_fetch_assoc($hasil)) {
+    $data[] = $baris;
+    
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,21 +36,26 @@
             <th>No</th>
             <th>NIM</th>
             <th>Nama</th>
+            <th>No Telp</th>
         </thead>
 
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>E020323057</td>
-            <td>anang</td>
-        </tr>
-            <br>
-        <tr>
-            <td>2</td>
-            <td>E020323077</td>
-            <td>irfan</td>
-        </tr>
-
+            <?php foreach ($data as $key => $value) :?>
+                <tr>
+                    <td>
+                        <?= $key + 1?>
+                    </td>
+                    <td>
+                        <?= $value["nim"]?>
+                    </td>
+                    <td>
+                        <?= $value["nama"]?>
+                    </td>
+                    <td>
+                        <?= $value["telp"]?>
+                    </td>
+                </tr>
+            <?php endforeach?>
         </tbody>
     </table>
 </body>
