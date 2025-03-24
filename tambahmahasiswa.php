@@ -24,6 +24,7 @@ $data = ambildata($query);
         text-decoration: none;
         display: inline-block;
         font-size: 15px;
+        border: none;
     }
     a {
         background-color:rgb(40, 29, 188);
@@ -40,6 +41,32 @@ $data = ambildata($query);
     }
     a:hover {
         background-color: rgb(15, 13, 62);
+    }
+    input {
+        border-radius: 10px;
+        padding: 10px 10px;
+        margin: 5px 0 10px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    input[type=text]:focus {
+        background-color: lightblue;
+        
+    }
+    input[type=email]:focus {
+        background-color: lightblue;
+        
+    }
+
+    select {
+        border-radius: 10px;
+        padding: 10px 10px;
+        margin: 5px 0 10px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
     }
 </style>
 <body>

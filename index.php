@@ -29,6 +29,11 @@ $data = ambildata($query);
     a:hover {
         background-color:rgb(26, 21, 93);
     }
+
+    thead th {
+        background-color: rgb(40, 29, 188);
+        color: white;
+    }
 </style>
 <body>
     <h1>DATA MAHASISWA</h1>
