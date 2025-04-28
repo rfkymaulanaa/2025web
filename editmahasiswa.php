@@ -69,7 +69,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
         padding: 10px 10px;
         margin: 5px 0 10px 0;
         display: inline-block;
-        border: 1px solid #ccc;
+        border: 1px solid #cccc;
         box-sizing: border-box;
     }
 </style>
