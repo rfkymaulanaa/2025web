@@ -1,154 +1,193 @@
 <?php
 
 session_start();
-if (!isset($_SESSION['login'])) {
-    header("Location: login.html");
-}
 
 include "koneksi.php";
+cekLogin();
 
 
 $query = "SELECT * FROM prodi";
 $data = ambildata($query);
 
+
+include "template/header.php";
+include "template/sidebar.php";
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Mahasiswa</title>
-</head>
+<main class="app-main">
 
-<style>
-    button {
-        background-color:rgb(40, 29, 188);
-        border-radius: 10px;
-        color: white;
-        padding: 10px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-        border: none;
-    }
-    a {
-        background-color:rgb(40, 29, 188);
-        border-radius: 10px;
-        color: white;
-        padding: 10px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-    }
-    button:hover {
-        background-color: rgb(15, 13, 62);
-    }
-    a:hover {
-        background-color: rgb(15, 13, 62);
-    }
-    input {
-        border-radius: 10px;
-        padding: 10px 10px;
-        margin: 5px 0 10px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
+    <div class="app-content-header">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="mb-0">Tambah Mahasiswa</h3>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.php">Tambah Mahasiswa</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tambah</li>
+                    </ol>
+                </div>
+            </div>
+            <!--end::Row-->
+        </div>
+        <!--end::Container-->
+    </div>
 
-    input[type=text]:focus {
-        background-color: lightblue;
-        
-    }
-    input[type=email]:focus {
-        background-color: lightblue;
-        
-    }
+    <div class="card card-warning card-outline mb-4 mt-4 mx-4 shadow">
+        <!--begin::Header-->
+        <div class="card-header">
+            <div class="card-title">Tambah Mahasiswa</div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Form-->
+        <form action="tambahaksimahasiswa.php" method="POST" enctype="multipart/form-data">
+            <!--begin::Body-->
+            <div class="card-body">
+                <div class="row mb-3">
+                    <label for="nim" class="col-sm-2 col-form-label">Nim</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nim" name="nim" required />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password" name="password" required />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nama" name="nama" required />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="tanggalLahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="tanggalLahir" name="tanggalLahir" required />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="telp" class="col-sm-2 col-form-label">No Telp</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="telp" name="telp" required />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="email" name="email" required />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="id_prodi" class="col-sm-2 col-form-label">Prodi</label>
+                    <div class="col-sm-10">
+                        <select name="id_prodi" id="id_prodi" class="form-control">
+                            <?php foreach ($data as $d) : ?>
+                                <option value=<?php echo $d['id']; ?>> <?php echo $d['nama']; ?> </option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                        <div class="row mb-3 mt-3">
+                            <label for="foto" class="col-sm-2 col-form-label">Upload Foto</label>
+                            <div class="col-sm-6">
+                                <input type="file" class="form-control" id="foto" name="foto" required />
+                            </div>
+                        </div>
+                </div>
 
-    select {
-        border-radius: 10px;
-        padding: 10px 10px;
-        margin: 5px 0 10px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-</style>
-<body>
+            </div>
+            <!--end::Body-->
+            <!--begin::Footer-->
+            <div class="card-footer">
+                <button type="submit" value="Simpan" class="btn btn-warning">Simpan</button>
+                <a href="index.php" class="btn btn-danger float-end">Kembali</a>
+            </div>
+            <!--end::Footer-->
+        </form>
+        <!--end::Form-->
+    </div>
+</main>
+
+<!-- <body>
 
     <h1>Tambah Data Mahasiswa </h1>
 
     <form action="tambahaksimahasiswa.php" method="post">
         <table>
-        <tr>
-            
-        <td >NIM </td>
-        <td>
-            <input style="margin-bottom: 5px;" type="text" id="nim" name="nim" required></td>
-        </tr>
+            <tr>
 
-        <tr>
-            
-        <td >Nama </td>
-        <td>
-            <input style="margin-bottom: 5px;" type="text" id="nama" name="nama" required>
-        </td>
-        </tr>
-        
-        <tr>
-        
-        <td >Tanggal Lahir </td>
-        <td>
-            <input  style="margin-bottom: 5px;" type="date" id="tanggalLahir" name="tanggalLahir" required>
-        </td>
-        </tr>
+                <td>NIM </td>
+                <td>
+                    <input style="margin-bottom: 5px;" type="text" id="nim" name="nim" required>
+                </td>
+            </tr>
 
-        <tr>
-            
-        <td >No Telp </td>
-        <td>
-            <input style="margin-bottom: 5px;" type="text" id="telp" name="telp" required>
-        </td>
-        </tr>
+            <tr>
 
-        <tr>
-            
-        <td >Email </td>
-        <td >
-            <input style="margin-bottom: 5px;" type="email" id="email" name="email" required>
-        </td>
-        </tr>
+                <td>Nama </td>
+                <td>
+                    <input style="margin-bottom: 5px;" type="text" id="nama" name="nama" required>
+                </td>
+            </tr>
 
-        <tr style="margin-bottom: 5px;">
-            
-        <td >Prodi </td>
-        <td>
-            <select name="id_prodi" id="" >
-                <?php foreach ($data as $d) :?> 
-            <option value= <?php echo $d['id']; ?> > <?php echo $d['nama']; ?> </option>
-                <?php endforeach ?>
-            </select>
-            
-        </td>
-        </tr>
+            <tr>
 
+                <td>Tanggal Lahir </td>
+                <td>
+                    <input style="margin-bottom: 5px;" type="date" id="tanggalLahir" name="tanggalLahir" required>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>No Telp </td>
+                <td>
+                    <input style="margin-bottom: 5px;" type="text" id="telp" name="telp" required>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>Email </td>
+                <td>
+                    <input style="margin-bottom: 5px;" type="email" id="email" name="email" required>
+                </td>
+            </tr>
+
+            <tr style="margin-bottom: 5px;">
+
+                <td>Prodi </td>
+                <td>
+                    <select name="id_prodi" id="">
+                       
+                    </select>
+
+                </td>
+            </tr>
 
 
-        <tr>
-            <td>
-        <button style="margin-top: 10px;" type="submit" value="Simpan" > Simpan </button>
-        </td>
-        </tr>
 
-        <tr>
-            <td>
-            <a href="index.php" style="margin-top: 5px;" >Kembali</a>
-        </td>
-        </tr>
+            <tr>
+                <td>
+                    <button style="margin-top: 10px;" type="submit" value="Simpan"> Simpan </button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="index.php" style="margin-top: 5px;">Kembali</a>
+                </td>
+            </tr>
 
         </table>
     </form>
-</body>
-</html>
+</body> -->
+
+<?php
+include "template/footer.php";
+?>

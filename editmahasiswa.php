@@ -1,5 +1,9 @@
 <?php
+session_start();
+
+
 include "koneksi.php";
+cekLogin();
 
 $query = "SELECT * FROM prodi";
 $data = ambildata($query);
@@ -7,73 +11,121 @@ $data = ambildata($query);
 $querymahasiswa = "SELECT * FROM mahasiswa WHERE nim = '$_GET[nim]'";
 $dataMahasiswa = ambildata($querymahasiswa);
 
-
+include "template/header.php";
+include "template/sidebar.php";
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Mahasiswa</title>
-</head>
+<main class="app-main">
 
-<style>
-    button {
-        background-color:rgb(40, 29, 188);
-        border-radius: 10px;
-        color: white;
-        padding: 10px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-        border: none;
-    }
-    a {
-        background-color:rgb(40, 29, 188);
-        border-radius: 10px;
-        color: white;
-        padding: 10px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-    }
-    button:hover {
-        background-color: rgb(15, 13, 62);
-    }
-    a:hover {
-        background-color: rgb(15, 13, 62);
-    }
-    input {
-        border-radius: 10px;
-        padding: 10px 10px;
-        margin: 5px 0 10px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
+    <div class="app-content-header">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="mb-0">Edit Mahasiswa</h3>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.php">Edit Mahasiswa</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    </ol>
+                </div>
+            </div>
+            <!--end::Row-->
+        </div>
+        <!--end::Container-->
+    </div>
 
-    input[type=text]:focus {
-        background-color: lightblue;
-        
-    }
-    input[type=email]:focus {
-        background-color: lightblue;
-        
-    }
+    <div class="card card-warning card-outline mb-4 mt-4 mx-4">
+        <!--begin::Header-->
+        <div class="card-header">
+            <div class="card-title">Edit Mahasiswa</div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Form-->
+        <form action="tambahaksimahasiswa.php" method="POST">
+            <!--begin::Body-->
+            <div class="card-body">
+                <div class="row mb-3">
+                    <label for="nim" class="col-sm-2 col-form-label">Nim</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nim" name="nim" required value="<?= $dataMahasiswa[0]["nim"] ?>" readonly />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="nim" name="nim" required value="<?= $dataMahasiswa[0]["password"] ?>" readonly />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nama" name="nama" required value="<?= $dataMahasiswa[0]["nama"] ?>" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="tanggalLahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="tanggalLahir" name="tanggalLahir" required value="<?= $dataMahasiswa[0]["tanggalLahir"] ?>" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="telp" class="col-sm-2 col-form-label">No Telp</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="telp" name="telp" required value="<?= $dataMahasiswa[0]["telp"] ?>" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="email" name="email" required value="<?= $dataMahasiswa[0]["email"] ?>" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="id_prodi" class="col-sm-2 col-form-label">Prodi</label>
+                    <div class="col-sm-10">
+                        <select name="id_prodi" id="">
+                            <?php foreach ($data as $d) : ?>
+                                <option value=<?php echo $d['id']; ?>
 
-    select {
-        border-radius: 10px;
-        padding: 10px 10px;
-        margin: 5px 0 10px 0;
-        display: inline-block;
-        border: 1px solid #cccc;
-        box-sizing: border-box;
-    }
-</style>
-<body>
+                                    <?=
+
+                                    $d['id'] == $dataMahasiswa[0]["id_prodi"] ?
+                                        "selected" : "";
+
+                                    ?>>
+
+                                    <?php echo $d['nama']; ?>
+
+                                </option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="row mb-3 mt-3">
+                        <label for="foto" class="col-sm-2 col-form-label">Upload Foto</label>
+                        <div class="col-sm-6">
+                            <input type="file" class="form-control" id="foto" name="foto" required value="<?= $dataMahasiswa[0]["foto"] ?>" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Body-->
+            <!--begin::Footer-->
+            <div class="card-footer">
+                <button type="submit" value="Simpan" class="btn btn-warning">Simpan</button>
+                <a href="index.php" class="btn btn-danger float-end">Kembali</a>
+            </div>
+            <!--end::Footer-->
+        </form>
+        <!--end::Form-->
+    </div>
+</main>
+
+<!-- <body>
 
     <h1>Edit Data Mahasiswa </h1>
 
@@ -83,7 +135,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
             
         <td >NIM </td>
         <td>
-            <input style="margin-bottom: 5px;" type="text" id="nim" name="nim" required value="<?= $dataMahasiswa[0]["nim"]?>" readonly>
+            <input style="margin-bottom: 5px;" type="text" id="nim" name="nim" required value="<?= $dataMahasiswa[0]["nim"] ?>" readonly>
         
         </td>
         </tr>
@@ -92,7 +144,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
             
         <td >Nama </td>
         <td>
-            <input style="margin-bottom: 5px;" type="text" id="nama" name="nama" required value="<?= $dataMahasiswa[0]["nama"]?>">
+            <input style="margin-bottom: 5px;" type="text" id="nama" name="nama" required value="<?= $dataMahasiswa[0]["nama"] ?>">
         </td>
         </tr>
         
@@ -100,7 +152,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
         
         <td >Tanggal Lahir </td>
         <td>
-            <input  style="margin-bottom: 5px;" type="date" id="tanggalLahir" name="tanggalLahir" required value="<?= $dataMahasiswa[0]["tanggalLahir"]?>">
+            <input  style="margin-bottom: 5px;" type="date" id="tanggalLahir" name="tanggalLahir" required value="<?= $dataMahasiswa[0]["tanggalLahir"] ?>">
         </td>
         </tr>
 
@@ -108,7 +160,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
             
         <td >No Telp </td>
         <td>
-            <input style="margin-bottom: 5px;" type="text" id="telp" name="telp" required value="<?= $dataMahasiswa[0]["telp"]?>">
+            <input style="margin-bottom: 5px;" type="text" id="telp" name="telp" required value="<?= $dataMahasiswa[0]["telp"] ?>">
         </td>
         </tr>
 
@@ -116,7 +168,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
             
         <td >Email </td>
         <td >
-            <input style="margin-bottom: 5px;" type="email" id="email" name="email" required value="<?= $dataMahasiswa[0]["email"]?>">
+            <input style="margin-bottom: 5px;" type="email" id="email" name="email" required value="<?= $dataMahasiswa[0]["email"] ?>">
         </td>
         </tr>
 
@@ -125,22 +177,7 @@ $dataMahasiswa = ambildata($querymahasiswa);
         <td >Prodi </td>
         <td>
             <select name="id_prodi" id="" >
-                <?php foreach ($data as $d) :?> 
-            <option value= <?php echo $d['id']; ?>
-
-                <?=
-
-                $d['id'] == $dataMahasiswa[0]["id_prodi"] ?
-                "selected" : "";
-                
-                ?>
-            
-             > 
-            
-            <?php echo $d['nama']; ?> 
-        
-            </option>
-                <?php endforeach ?>
+           
             </select>
             
         </td>
@@ -162,5 +199,6 @@ $dataMahasiswa = ambildata($querymahasiswa);
 
         </table>
     </form>
-</body>
-</html>
+</body> -->
+
+<?php include "template/footer.php"; ?>
